@@ -7,7 +7,7 @@ Files need to be moved manually, for example folder from the file path below con
 years 1910-1930 and then the final file represents the average over these 20 years; raster information such as number columns
 of columns needs to be added manually"""
 
-path1 = input('\nSpecify the path to files: for example /Users/krzysztofnalborski/Desktop/rainfall_X/ : ')
+path1 = input('\nSpecify the path to files: for example /Users/krzysztofnalborski/Desktop/Climate_Ranges/meantemp_X/ : ')
 path1 = str(path1)
 
 VARIABLE = input('\nSpecify the variable: ')
@@ -21,9 +21,9 @@ for file1 in files1:
     array1 = numpy.loadtxt(file1, skiprows=6, comments=None)
     w1.append(array1)
 
-w1 = np.array(w1)
+w1 = numpy.array(w1)
 
-average1 = np.mean(w1, axis=0)
+average1 = numpy.mean(w1, axis=0)
 
 mx = ma.masked_where(average1 == -9999.0, average1)
 mx = ma.masked_where(average1 < -50, average1)
@@ -34,5 +34,5 @@ minim = mx.min()
 print ('Max value is:', maxim)
 print ('Min value is:', minim)
 
-c1 = np.savetxt(VARIABLE + '.txt', average1)
+c1 = numpy.savetxt(VARIABLE + '.txt', average1)
 
