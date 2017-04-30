@@ -26,7 +26,7 @@ import plotly.graph_objs as go
 ####### READ THE DATA INTO A PANDAS DATAFRAME AND SET THE CORRECT TIME SERIE AS INDEX, IT ALSO CREATES A CSV WITH THE CONCATENATED DATA   #####################
 print ('####################     UK Climate Time Series Analysis     ####################')
 #Modify the path according to the path where you have stored the csv files that you want to read
-path = input('\nSpecify the path to files: for example /Users/krzysztofnalborski/Desktop/Climate_TS/meantemp/ : ')
+path = input('\nSpecify the path to files and end with / (for example /Users/krzysztofnalborski/Desktop/Climate_TS/meantemp/) : ')
 path = str(path)
 
 #User specifies
@@ -341,13 +341,13 @@ UK2 = whole_UK_seasons.ix[x2 + '-01-31':y2 + '-12-31']
 uk2 = UK2.mean(axis=0)
 
 ttest1 = stats.ttest_rel(UK1, UK2)
-p = ttest1[1]
+p1 = ttest1[1]
 print ('T-test Results for UK:')
-if p < 0.05:
+if p1 < 0.05:
     print ('Different mean values in UK between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p1 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -359,13 +359,13 @@ Scot2 = Scotland_seasons.ix[x2 + '-01-31':y2 + '-12-31']
 scot2 = Scot2.mean(axis=0)
 
 ttest2 = stats.ttest_rel(Scot1, Scot2)
-p = ttest2[1]
+p2 = ttest2[1]
 print ('\nT-test Results for Scotland:')
-if p < 0.05:
+if p2 < 0.05:
     print ('Different mean values in Scotland between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p2 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -377,13 +377,13 @@ Eng2 = England_seasons.ix[x2 + '-01-31':y2 + '-12-31']
 eng2 = Eng2.mean(axis=0)
 
 ttest3 = stats.ttest_rel(Eng1, Eng2)
-p = ttest3[1]
+p3 = ttest3[1]
 print ('\nT-test Results for England:')
-if p < 0.05:
+if p3 < 0.05:
     print ('Different mean values in England between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p3 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -395,13 +395,13 @@ Wal2 = Wales_seasons.ix[x2 + '-01-31':y2 + '-12-31']
 wal2 = Wal2.mean(axis=0)
 
 ttest4 = stats.ttest_rel(Wal1, Wal2)
-p = ttest4[1]
+p4 = ttest4[1]
 print ('\nT-test Results for Wales:')
-if p < 0.05:
+if p4 < 0.05:
     print ('Different mean values in Wales between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p4 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -413,13 +413,13 @@ NI2 = NI_seasons.ix[x2 + '-01-31':y2 + '-12-31']
 ni2 = NI2.mean(axis=0)
 
 ttest5 = stats.ttest_rel(NI1, NI2)
-p = ttest5[1]
+p5 = ttest5[1]
 print ('\nT-test Results for Northern Ireland:')
-if p < 0.05:
+if p5 < 0.05:
     print ('Different mean values in Northern Ireland between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p5 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -444,7 +444,11 @@ for i in Percentage_diff:
     diff.append(p)
 
 print ('\n% changes in values for analysed period- countries(see bar chart):')
-print (diff)
+print ('UK:',diff[0])
+print ('Scotland:',diff[1])
+print ('England:',diff[2])
+print ('Wales:',diff[3])
+print ('Northern Ireland:',diff[4])
 
 # add some text for labels, title and axes ticks
 ax.set_ylabel(u)
@@ -497,13 +501,13 @@ for i in Winter2:
 Winters_UK2 = sum(W2)/len(W2)
 
 ttestwinter = stats.ttest_rel(W1, W2)
-p = ttestwinter[1]
+p11 = ttestwinter[1]
 print ('\nT-test Results for Winters:')
-if p < 0.05:
+if p11 < 0.05:
     print ('Different mean values between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p11 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -519,25 +523,25 @@ for i in Spring:
 
 Springs_UK1 = sum(S1)/len(S1)
 
-UKSmar = whole_UK_seasons.ix[x2 + '-03-31':y2 + '-03-31':12]
-UKSapr = whole_UK_seasons.ix[x2 + '-04-30':y2 + '-04-30':12]
-UKSmay = whole_UK_seasons.ix[x2 + '-05-31':y2 + '-05-31':12]
-Spring = list(zip(UKSmar, UKSapr, UKSmay))
+UKSmar2 = whole_UK_seasons.ix[x2 + '-03-31':y2 + '-03-31':12]
+UKSapr2 = whole_UK_seasons.ix[x2 + '-04-30':y2 + '-04-30':12]
+UKSmay2 = whole_UK_seasons.ix[x2 + '-05-31':y2 + '-05-31':12]
+Spring2 = list(zip(UKSmar2, UKSapr2, UKSmay2))
 S2 = [] #for t-test
-for i in Spring:
+for i in Spring2:
     x = sum(i)/len(i)
     S2.append(x)
 
 Springs_UK2 = sum(S2)/len(S2)
 
 ttestspring = stats.ttest_rel(S1, S2)
-p = ttestspring[1]
+p22 = ttestspring[1]
 print ('\nT-test Results for Springs:')
-if p < 0.05:
+if p22 < 0.05:
     print ('Different mean values between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p22 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -553,25 +557,25 @@ for i in Summer:
 
 Summers_UK1 = sum(Su1)/len(Su1)
 
-UKSUjun = whole_UK_seasons.ix[x2 + '-06-30':y2 + '-06-30':12]
-UKSUjul = whole_UK_seasons.ix[x2 + '-07-31':y2 + '-07-31':12]
-UKSUaug = whole_UK_seasons.ix[x2 + '-08-31':y2+ '-08-31':12]
-Summer = list(zip(UKSUjun, UKSUjul, UKSUaug))
+UKSUjun2 = whole_UK_seasons.ix[x2 + '-06-30':y2 + '-06-30':12]
+UKSUjul2 = whole_UK_seasons.ix[x2 + '-07-31':y2 + '-07-31':12]
+UKSUaug2 = whole_UK_seasons.ix[x2 + '-08-31':y2+ '-08-31':12]
+Summer2 = list(zip(UKSUjun2, UKSUjul2, UKSUaug2))
 Su2 = [] #for t-test
-for i in Summer:
+for i in Summer2:
     x = sum(i)/len(i)
     Su2.append(x)
 
 Summers_UK2 = sum(Su2)/len(Su2)
 
 ttestsummer = stats.ttest_rel(Su1, Su2)
-p = ttestsummer[1]
+p33 = ttestsummer[1]
 print ('\nT-test Results for Summers:')
-if p < 0.05:
+if p33 < 0.05:
     print ('Different mean values between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p33 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -587,25 +591,25 @@ for i in Autumn:
 
 Autumns_UK1 = sum(A1)/len(A1)
 
-UKAsep = whole_UK_seasons.ix[x2 + '-09-30':y2 + '-09-30':12]
-UKAoct = whole_UK_seasons.ix[x2 + '-10-31':y2 + '-10-31':12]
-UKAnov = whole_UK_seasons.ix[x2 + '-11-30':y2 + '-11-30':12]
-Autumn = list(zip(UKAsep, UKAoct, UKAnov))
+UKAsep2 = whole_UK_seasons.ix[x2 + '-09-30':y2 + '-09-30':12]
+UKAoct2 = whole_UK_seasons.ix[x2 + '-10-31':y2 + '-10-31':12]
+UKAnov2 = whole_UK_seasons.ix[x2 + '-11-30':y2 + '-11-30':12]
+Autumn2 = list(zip(UKAsep2, UKAoct2, UKAnov2))
 A2 = [] #for t-test
-for i in Autumn:
+for i in Autumn2:
     x = sum(i)/len(i)
     A2.append(x)
 
 Autumns_UK2 = sum(A2)/len(A2)
 
 ttestautumn = stats.ttest_rel(A1, A2)
-p = ttestautumn[1]
+p44 = ttestautumn[1]
 print ('\nT-test Results for Autumns:')
-if p < 0.05:
+if p44 < 0.05:
     print ('Different mean values between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
-elif p > 0.05:
+elif p44 > 0.05:
     print ('Variable:', VARIABLE)
     print ("Difference not statistically significant at level a = 0.05")
 
@@ -629,7 +633,10 @@ for i in Percentage_diff2:
     diff2.append(p2)
     
 print ('\n% changes in values for analysed period-seasons (see bar chart)')
-print (diff2)
+print ('Winters:',diff2[0])
+print ('Springs:',diff2[1])
+print ('Summers:',diff2[2])
+print ('Autumns:',diff2[3])
 
 # add some text for labels, title and axes ticks
 ax.set_ylabel(u)

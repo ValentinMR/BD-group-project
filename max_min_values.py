@@ -2,7 +2,7 @@ import numpy
 import glob
 
 #Code to obtain min and max values for a particular variable to define range for viualization purposes- video in Matlab
-path = input('\nSpecify the path to files: for example /Users/krzysztofnalborski/Desktop/BD_Group/Rainfall/ : ')
+path = input('\nSpecify the path to files and end with /  (for example /Users/krzysztofnalborski/Desktop/BD_Group/Rainfall/) : ')
 files = glob.glob(path + '*.txt')
 
 list_max =[]

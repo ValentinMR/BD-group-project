@@ -7,7 +7,7 @@ Files need to be moved manually, for example folder from the file path below con
 years 1910-1930 and then the final file represents the average over these 20 years; raster information such as number columns
 of columns needs to be added manually"""
 
-path1 = input('\nSpecify the path to files: for example /Users/krzysztofnalborski/Desktop/Climate_Ranges/meantemp_X/ : ')
+path1 = input('\nSpecify the path to files and end with / (for example /Users/krzysztofnalborski/Desktop/Climate_Ranges/meantemp_X/) : ')
 path1 = str(path1)
 
 VARIABLE = input('\nSpecify the variable: ')
