@@ -8,20 +8,11 @@ from datetime import datetime
 import dateutil.parser
 from statsmodels.tsa.stattools import adfuller
 from scipy import stats
-import statsmodels.api as sm
-from statsmodels.graphics.api import qqplot
-#ACF and PACF plots:
-from statsmodels.tsa.stattools import acf, pacf
-from statsmodels.tsa.arima_model import ARIMA
-from sklearn.metrics import mean_squared_error
-from pandas.tools.plotting import autocorrelation_plot
 #Geo data
 from pyproj import Proj, transform
 from pygeocoder import Geocoder
 import reverse_geocoder as rg 
-#For Graphs
-import plotly.plotly as py
-import plotly.graph_objs as go
+
 
 ####### READ THE DATA INTO A PANDAS DATAFRAME AND SET THE CORRECT TIME SERIE AS INDEX, IT ALSO CREATES A CSV WITH THE CONCATENATED DATA   #####################
 print ('####################     UK Climate Time Series Analysis     ####################')
@@ -222,54 +213,90 @@ def rollings_stats_all_annual(w, start, end, var_name, m1, m2, m3, m4, m5, m6, m
     rolmean5 = pd.Series(season5).rolling(window=w).mean()
     
     #Perform Dickey-Fuller test1:
-    print ('\nUK' + '-' + 'Results of Dickey-Fuller Test:')
+    print ('\n***UK' + '-' + 'Results of Dickey-Fuller Test:***')
     dftest = adfuller(df_seasons1, autolag='AIC')
-    print (dftest)
     p_value =  dftest[1]
+    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+    for key,value in dftest[4].items():
+        dfoutput['Critical Value (%s)'%key] = value
+    print (dfoutput)
     if p_value > 0.05:
-        print ('Data is NOT stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is NOT stationary')
+        print ('Alpha Level = 0.05')
     elif p_value < 0.05:
-        print ('Data is stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is stationary')
+        print ('Alpha Level = 0.05')
     
     #Perform Dickey-Fuller test2:
-    print ('\nScotland' + '-' + 'Results of Dickey-Fuller Test:')
+    print ('\n***Scotland' + '-' + 'Results of Dickey-Fuller Test:***')
     dftest = adfuller(df_seasons2, autolag='AIC')
-    print (dftest)
     p_value =  dftest[1]
+    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+    for key,value in dftest[4].items():
+        dfoutput['Critical Value (%s)'%key] = value
+    print (dfoutput)
     if p_value > 0.05:
-        print ('Data is NOT stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is NOT stationary')
+        print ('Alpha Level = 0.05')
     elif p_value < 0.05:
-        print ('Data is stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is stationary')
+        print ('Alpha Level = 0.05')
     
     #Perform Dickey-Fuller test3:
-    print ('\nEnland' + '-' + 'Results of Dickey-Fuller Test:')
+    print ('\n***Enland' + '-' + 'Results of Dickey-Fuller Test: ***')
     dftest = adfuller(df_seasons3, autolag='AIC')
-    print (dftest)
     p_value =  dftest[1]
+    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+    for key,value in dftest[4].items():
+        dfoutput['Critical Value (%s)'%key] = value
+    print (dfoutput)
     if p_value > 0.05:
-        print ('Data is NOT stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is NOT stationary')
+        print ('Alpha Level = 0.05')
     elif p_value < 0.05:
-        print ('Data is stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is stationary')
+        print ('Alpha Level = 0.05')
     
     #Perform Dickey-Fuller test4:
-    print ('\nWales' + '-' + 'Results of Dickey-Fuller Test:')
+    print ('\n***Wales' + '-' + 'Results of Dickey-Fuller Test: ***')
     dftest = adfuller(df_seasons4, autolag='AIC')
-    print (dftest)
     p_value =  dftest[1]
+    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+    for key,value in dftest[4].items():
+        dfoutput['Critical Value (%s)'%key] = value
+    print (dfoutput)
     if p_value > 0.05:
-        print ('Data is NOT stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is NOT stationary')
+        print ('Alpha Level = 0.05')
     elif p_value < 0.05:
-        print ('Data is stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is stationary')
+        print ('Alpha Level = 0.05')
+   
     
     #Perform Dickey-Fuller test5:
-    print ('\nNorthern Ireland' + '-' + 'Results of Dickey-Fuller Test:')
+    print ('\n***Northern Ireland' + '-' + 'Results of Dickey-Fuller Test: ***')
     dftest = adfuller(df_seasons5, autolag='AIC')
-    print (dftest)
     p_value =  dftest[1]
+    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+    for key,value in dftest[4].items():
+        dfoutput['Critical Value (%s)'%key] = value
+    print (dfoutput)
     if p_value > 0.05:
-        print ('Data is is NOT stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is NOT stationary')
+        print ('Alpha Level = 0.05')
     elif p_value < 0.05:
-        print ('Data is stationary')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is stationary')
+        print ('Alpha Level = 0.05')
 
     #Plots
     mean1 = plt.plot(season_time, rolmean1, color='blue', label='UK')
@@ -282,14 +309,18 @@ def rollings_stats_all_annual(w, start, end, var_name, m1, m2, m3, m4, m5, m6, m
     pylab.legend(loc=9, bbox_to_anchor=(0.5, -0.07), ncol=5)
     plt.title(season_name + ' ' + x1 + '-' + y2 + ' ' + var_name + ' ' + '(' + win + '-' + 'year Rolling Mean)')
     plt.grid()
+    print ('\n!!!   Close Figure 1 to continue analysis   !!!')
     plt.show()
+    
 
+print ('\n##########     Statistics and Visualizations     ##########')
+print ('\n' + 'See Figure 1' + ' ' + '(' + 'Mean Annual' + ' ' + VARIABLE + ' ' + x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2 + ' ' + 'for vizualization' +')')
 #Calling the method
 rollings_stats_all_annual(w, start, end, VARIABLE,1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, whole_UK_seasons, \
-Scotland_seasons, England_seasons, Wales_seasons, NI_seasons, 'Mean Annual')
+Scotland_seasons, England_seasons, Wales_seasons, NI_seasons, 'Average Annual')
+
 
 ############################################################################################################################
-
 """Method for obtaining rolling stats for seasons in UK"""
 def rollings_stats_seasons(w, var_name, m1, m2, m3, df_seasons, season_name, country_name):
     #Getting seasons (winter, spring, summer, autumn)
@@ -301,18 +332,27 @@ def rollings_stats_seasons(w, var_name, m1, m2, m3, df_seasons, season_name, cou
     rolmean = pd.Series(season).rolling(window=w).mean()
     
     #Perform Dickey-Fuller test:
-    print ('\n', season_name, ': UK- Results of Dickey-Fuller Test:')
+    print ('\n***',season_name, ': UK- Results of Dickey-Fuller Test: ***')
     dftest = adfuller(df_seasons, autolag='AIC')
-    print (dftest)
     p_value =  dftest[1]
+    dfoutput = pd.Series(dftest[0:4], index=['Test Statistic','p-value','#Lags Used','Number of Observations Used'])
+    for key,value in dftest[4].items():
+        dfoutput['Critical Value (%s)'%key] = value
+    print (dfoutput)
     if p_value > 0.05:
-        print ('Data is is NOT stationary\n')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is NOT stationary')
+        print ('Alpha Level = 0.05')
     elif p_value < 0.05:
-        print ('Data is stationary\n')
+        print ('\nInterpretation:')
+        print ('Based on p-value data is stationary')
+        print ('Alpha Level = 0.05')
+    
     
     return rolmean
 
-
+print ('\n##########     Statistics and Visualizations for seasons in the UK     ##########')
+print ('\n' + 'See Figure 1' + ' ' + '(' + 'UK' + ' ' + VARIABLE + ' ' + x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2 + ' ' + 'by seasons' + ' ' + 'for vizualization' +')')
 #Rolling stats seasons for the whole UK
 winUK = rollings_stats_seasons(w, VARIABLE, 12, 1, 2, whole_UK_seasons, season1, 'UK')
 sprUK = rollings_stats_seasons(w, VARIABLE, 3, 4, 5, whole_UK_seasons, season2, 'UK')
@@ -329,8 +369,8 @@ mean4 = plt.plot(season_time, autUK, color='black', label='Autumn')
 pylab.legend(loc=9, bbox_to_anchor=(0.5, -0.07), ncol=5)
 plt.title('UK' + ' ' + VARIABLE + ' ' + x1 + '-' + y2 + ' ' + 'by seasons' + ' ' + '(' + win + '-' + 'year Rolling Mean)')
 plt.grid()
+print ('\n!!!   Close Figure 1 to continue analysis   !!!')
 plt.show()
-
 
 ##############################################################################################################################
 """Grouped Graph for Annual Values"""
@@ -342,14 +382,21 @@ uk2 = UK2.mean(axis=0)
 
 ttest1 = stats.ttest_rel(UK1, UK2)
 p1 = ttest1[1]
-print ('T-test Results for UK:')
+print ('\n##########     Comparing the means     ##########')
+print ('See Figure 1' + ' ' + '(' + VARIABLE + ' ' + x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2 + ' ' + 'for vizualization' +')')
+print ('\n***T-test Results for UK: ***')
+ttoutput = pd.Series(ttest1[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p1 < 0.05:
-    print ('Different mean values in UK between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value') 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p1 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #
 Scot1 = Scotland_seasons.ix[x1 + '-01-31':y1 + '-12-31']
@@ -360,14 +407,20 @@ scot2 = Scot2.mean(axis=0)
 
 ttest2 = stats.ttest_rel(Scot1, Scot2)
 p2 = ttest2[1]
-print ('\nT-test Results for Scotland:')
+print ('\n***T-test Results for Scotland: ***')
+print ('T-test Results for UK:')
+ttoutput = pd.Series(ttest2[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p2 < 0.05:
-    print ('Different mean values in Scotland between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value') 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p2 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #
 Eng1 = England_seasons.ix[x1 + '-01-31':y1 + '-12-31']
@@ -378,14 +431,19 @@ eng2 = Eng2.mean(axis=0)
 
 ttest3 = stats.ttest_rel(Eng1, Eng2)
 p3 = ttest3[1]
-print ('\nT-test Results for England:')
+print ('\n***T-test Results for England: ***')
+ttoutput = pd.Series(ttest3[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p3 < 0.05:
-    print ('Different mean values in England between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value') 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p3 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #
 Wal1 = Wales_seasons.ix[x1 + '-01-31':y1 + '-12-31']
@@ -396,14 +454,19 @@ wal2 = Wal2.mean(axis=0)
 
 ttest4 = stats.ttest_rel(Wal1, Wal2)
 p4 = ttest4[1]
-print ('\nT-test Results for Wales:')
+print ('\n***T-test Results for Wales: ***')
+ttoutput = pd.Series(ttest4[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p4 < 0.05:
-    print ('Different mean values in Wales between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value') 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p4 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #
 NI1 = NI_seasons.ix[x1 + '-01-31':y1 + '-12-31']
@@ -414,14 +477,19 @@ ni2 = NI2.mean(axis=0)
 
 ttest5 = stats.ttest_rel(NI1, NI2)
 p5 = ttest5[1]
-print ('\nT-test Results for Northern Ireland:')
+print ('\n***T-test Results for Northern Ireland: ***')
+ttoutput = pd.Series(ttest5[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p5 < 0.05:
-    print ('Different mean values in Northern Ireland between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value')  
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p5 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #Graphs
 N = 5
@@ -443,12 +511,11 @@ for i in Percentage_diff:
     p = '%.2f%%' % p
     diff.append(p)
 
-print ('\n% changes in values for analysed period- countries(see bar chart):')
-print ('UK:',diff[0])
-print ('Scotland:',diff[1])
-print ('England:',diff[2])
-print ('Wales:',diff[3])
-print ('Northern Ireland:',diff[4])
+print ('\n% change' + ' ' + 'in' + ' ' + VARIABLE + ' ' + x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2 )
+per1 = pd.Series(diff[0:5], index=['UK','Scotland', 'England', 'Wales', 'Northern Ireland'])
+print (per1)
+
+print ('\n' + 'See Figure 1' + ' ' + '(' + VARIABLE + ' ' + x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2 + ' ' + 'for vizualization' +')')
 
 # add some text for labels, title and axes ticks
 ax.set_ylabel(u)
@@ -472,11 +539,15 @@ def autolabel(rects):
 
 autolabel(rects11)
 autolabel(rects22)
+print ('!!!   Close Figure 1 to continue analysis   !!!')
 plt.show()
+
+
 
 ############################################################################################################################
 #Getting data for seasons for the whole UK
-
+print ('\n##########     Comparing the means by seasons     ##########')
+print ('See Figure 1' + ' ' + '(' + VARIABLE + ' ' + x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2 + ' ' + 'by seasons' + ' ' + 'for vizualization' +')')
 #Winter
 UKWjan = whole_UK_seasons.ix[x1 + '-01-31':y1 + '-01-31':12]
 UKWfeb = whole_UK_seasons.ix[x1 + '-02-28':y1 + '-02-28':12]
@@ -502,14 +573,19 @@ Winters_UK2 = sum(W2)/len(W2)
 
 ttestwinter = stats.ttest_rel(W1, W2)
 p11 = ttestwinter[1]
-print ('\nT-test Results for Winters:')
+print ('\n***T-test Results for Winters: ***')
+ttoutput = pd.Series(ttestwinter[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p11 < 0.05:
-    print ('Different mean values between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value') 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p11 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #Spring
 UKSmar = whole_UK_seasons.ix[x1 + '-03-31':y1 + '-03-31':12]
@@ -536,14 +612,19 @@ Springs_UK2 = sum(S2)/len(S2)
 
 ttestspring = stats.ttest_rel(S1, S2)
 p22 = ttestspring[1]
-print ('\nT-test Results for Springs:')
+print ('\n***T-test Results for Springs: ***')
+ttoutput = pd.Series(ttestspring[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p22 < 0.05:
-    print ('Different mean values between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value')  
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p22 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #Summer
 UKSUjun = whole_UK_seasons.ix[x1 + '-06-30':y1 + '-06-30':12]
@@ -570,14 +651,19 @@ Summers_UK2 = sum(Su2)/len(Su2)
 
 ttestsummer = stats.ttest_rel(Su1, Su2)
 p33 = ttestsummer[1]
-print ('\nT-test Results for Summers:')
+print ('\n***T-test Results for Summers: ***')
+ttoutput = pd.Series(ttestsummer[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p33 < 0.05:
-    print ('Different mean values between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value') 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p33 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #Autumn
 UKAsep = whole_UK_seasons.ix[x1 + '-09-30':y1 + '-09-30':12]
@@ -604,14 +690,19 @@ Autumns_UK2 = sum(A2)/len(A2)
 
 ttestautumn = stats.ttest_rel(A1, A2)
 p44 = ttestautumn[1]
-print ('\nT-test Results for Autumns:')
+print ('\n***T-test Results for Autumns: ***')
+ttoutput = pd.Series(ttestautumn[0:2], index=['Test Statistic','p-value'])
+print (ttoutput)
 if p44 < 0.05:
-    print ('Different mean values between', x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2) 
+    print ('\nInterpretation:')
+    print ('Significantly Different mean values based on p-value') 
     print ('Variable:', VARIABLE)
     print ('Alpha Level = 0.05')
 elif p44 > 0.05:
+    print ('\nInterpretation:')
     print ('Variable:', VARIABLE)
-    print ("Difference not statistically significant at level a = 0.05")
+    print ('Difference not statistically significant')
+    print ('Alpha Level = 0.05')
 
 #Graphs
 N = 4
@@ -632,11 +723,11 @@ for i in Percentage_diff2:
     p2 = '%.2f%%' % p2
     diff2.append(p2)
     
-print ('\n% changes in values for analysed period-seasons (see bar chart)')
-print ('Winters:',diff2[0])
-print ('Springs:',diff2[1])
-print ('Summers:',diff2[2])
-print ('Autumns:',diff2[3])
+print ('\n% change' + ' ' + 'in' + ' ' + VARIABLE + ' ' + x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2 )
+per1 = pd.Series(diff2[0:4], index=['Winters','Springs', 'Summers', 'Autums'])
+print (per1)
+
+print ('\n' + 'See Figure 1' + ' ' + '(' + VARIABLE + ' ' + x1 + '-' + y1 + ' ' + 'vs.' + ' ' + x2 + '-' + y2 + ' ' + 'by seasons' + ' ' + 'for vizualization' +')')
 
 # add some text for labels, title and axes ticks
 ax.set_ylabel(u)
